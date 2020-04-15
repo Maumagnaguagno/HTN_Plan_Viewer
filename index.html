@@ -33,21 +33,21 @@ graphviz.width(window.innerWidth - 20);
 graphviz.height(window.innerHeight - 20);
 graphviz.fit(true);
 function render() {
-  var graph = "digraph G {", warnings = "";
+  var dot = "digraph G {", warnings = "";
   var lines = document.getElementById("input").value.split("\n");
   for(var i = 0; i < lines.length; ++i) {
     var m, l = lines[i];
     if (!l) continue;
     if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
-      graph += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=box3d]";
+      dot += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=box3d]";
     else if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)(?:\s+([\d\s]*))?$/)) // Method
-      graph += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; " + m[1] + " -> " + m[3] + " -> {" + (m[4] || "") + "}";
+      dot += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; m" + i + " [label=\"" + m[3] + "\"]; " + m[1] + " -> m" + i + " -> {" + (m[4] || "") + "}";
     else if (m = l.match(/^root\s+([\d\s]*)$/)) // Root
-      graph += "\n  root -> {" + m[1] + "}";
+      dot += "\n  root -> {" + m[1] + "}";
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
   }
   if (warnings) alert(warnings);
-  graphviz.renderDot(graph + "\n}");
+  graphviz.renderDot(dot + "\n}");
 }
 </script>
 </body>
