@@ -41,7 +41,7 @@ function render() {
     if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
       dot += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=box3d]";
     else if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)(?:\s+([\d\s]*))?$/)) // Method
-      dot += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; m" + i + " [label=\"" + m[3] + "\"]; " + m[1] + " -> m" + i + " -> {" + (m[4] || "") + "}";
+      dot += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; m" + m[1] + " [label=\"" + m[3] + "\"]; " + m[1] + " -> m" + m[1] + " -> {" + (m[4] || "") + "}";
     else if (m = l.match(/^root\s+([\d\s]*)$/)) // Root
       dot += "\n  root -> {" + m[1] + "}";
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
