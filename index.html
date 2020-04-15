@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="HTN Plan Viewer">
+  <title>HTN decomposition</title>
+  <meta name="description" content="Graph visualization of HTN plans using IPC output format.">
+</head>
+
+<body>
+<header style="position:fixed;font-family:Arial,sans-serif">
+<h1 style="margin:0">HTN Plan Viewer</h1>
+<button style="position: absolute;right:0" onclick="render()">Generate</button>
+<textarea id="input" rows="10" cols="60">
+3 move f0 f1
+4 board p0 f1
+5 move f1 f0
+6 debark p0 f0
+root 0
+0 solve_elevator  -> m1_go_ordering_0 1 2
+1 deliver_person p0 f1 f0 -> m2_ordering_0 3 4 5 6
+2 solve_elevator  -> m1_abort_ordering_0
+</textarea>
+
+<p style="position:fixed;bottom:0">Made by <a href="https://github.com/maumagnaguagno">Mau Magnaguagno</a> based on the <a href="http://gki.informatik.uni-freiburg.de/ipc2020/format.pdf">IPC output format</a></p>
+</header>
+<div id="graph" style="display:block;margin:auto"></div>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/@hpcc-js/wasm@0.3.6/dist/index.min.js"></script>
+<script src="https://unpkg.com/d3-graphviz@3.0.0/build/d3-graphviz.js"></script>
+<script>
+var graphviz = d3.select("#graph").graphviz().on("initEnd", render);
+graphviz.width(window.innerWidth - 20);
+graphviz.height(window.innerHeight - 20);
+graphviz.fit(true);
+function render() {
+  var graph = "digraph G {", warnings = "";
+  var lines = document.getElementById("input").value.split("\n");
+  for(var i = 0; i < lines.length; ++i) {
+    var m, l = lines[i];
+    if (!l) continue;
+    if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
+      graph += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=box3d]";
+    else if (m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)(?:\s+([\d\s]*))?$/)) // Method
+      graph += "\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; " + m[1] + " -> " + m[3] + " -> {" + (m[4] || "") + "}";
+    else if (m = l.match(/^root\s+([\d\s]*)$/)) // Root
+      graph += "\n  root -> {" + m[1] + "}";
+    else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
+  }
+  if (warnings) alert(warnings);
+  graphviz.renderDot(graph + "\n}");
+}
+</script>
+</body>
+</html>
