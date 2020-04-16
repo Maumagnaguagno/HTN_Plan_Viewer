@@ -9,23 +9,23 @@
 <body>
 <header style="position:fixed;font-family:Arial,sans-serif">
 <h1 style="margin:0">HTN Plan Viewer</h1>
-<button style="position: absolute;right:0" onclick="render()">Generate</button>
+<button style="position:absolute;right:0" onclick="render()">Generate</button>
 <textarea id="input" rows="10" cols="60">
 3 move f0 f1
 4 board p0 f1
 5 move f1 f0
 6 debark p0 f0
 root 0
-0 solve_elevator  -> m1_go_ordering_0 1 2
+0 solve_elevator -> m1_go_ordering_0 1 2
 1 deliver_person p0 f1 f0 -> m2_ordering_0 3 4 5 6
-2 solve_elevator  -> m1_abort_ordering_0
+2 solve_elevator -> m1_abort_ordering_0
 </textarea>
 <button style="display:block;width:50%;position:absolute;left:0" onclick="download('graph.dot',dot)">Download DOT</button>
 <button style="display:block;width:50%;position:absolute;right:0" onclick="download('graph.svg',document.getElementById('graph').innerHTML)">Download SVG</button>
 
 <p style="position:fixed;bottom:0">Made by <a href="https://github.com/maumagnaguagno">Mau Magnaguagno</a> based on the <a href="http://gki.informatik.uni-freiburg.de/ipc2020/format.pdf">IPC output format</a></p>
 </header>
-<div id="graph" style="display:block;margin:auto"></div>
+<div id="graph"></div>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/@hpcc-js/wasm@0.3.6/dist/index.min.js"></script>
 <script src="https://unpkg.com/d3-graphviz@3.0.0/build/d3-graphviz.js"></script>
