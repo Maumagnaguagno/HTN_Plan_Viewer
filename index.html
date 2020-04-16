@@ -20,6 +20,7 @@ root 0
 1 deliver_person p0 f1 f0 -> m2_ordering_0 3 4 5 6
 2 solve_elevator  -> m1_abort_ordering_0
 </textarea>
+<button style="display:block;width:50%;position:absolute;left:0" onclick="download('graph.dot',dot)">Download DOT</button>
 
 <p style="position:fixed;bottom:0">Made by <a href="https://github.com/maumagnaguagno">Mau Magnaguagno</a> based on the <a href="http://gki.informatik.uni-freiburg.de/ipc2020/format.pdf">IPC output format</a></p>
 </header>
@@ -32,9 +33,10 @@ var graphviz = d3.select("#graph").graphviz().on("initEnd", render);
 graphviz.width(window.innerWidth - 20);
 graphviz.height(window.innerHeight - 20);
 graphviz.fit(true);
+var dot;
 function render() {
-  var dot = "digraph G {", warnings = "";
-  var lines = document.getElementById("input").value.split("\n");
+  var lines = document.getElementById("input").value.split("\n"), warnings = "";
+  dot = "digraph G {";
   for(var i = 0; i < lines.length; ++i) {
     var m, l = lines[i];
     if (!l) continue;
@@ -47,7 +49,17 @@ function render() {
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
   }
   if (warnings) alert(warnings);
-  graphviz.renderDot(dot + "\n}");
+  graphviz.renderDot(dot += "\n}");
+}
+
+function download(filename, text) {
+	var element = document.createElement("a");
+	element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+	element.setAttribute("download", filename);
+	element.style.display = "none";
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
 }
 </script>
 </body>
