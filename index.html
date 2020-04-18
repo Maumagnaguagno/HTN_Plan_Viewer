@@ -36,7 +36,7 @@ graphviz.fit(true);
 var dot;
 function render() {
   var lines = document.getElementById("input").value.split("\n"), warnings = "", order, data = {};
-  dot = "digraph G {";
+  dot = "digraph HTN {";
   for(var i = 0; i < lines.length; ++i) {
     var m, l = lines[i];
     if(!l) continue;
@@ -49,18 +49,16 @@ function render() {
       order = m[1];
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
   }
-  if(order)
-  {
+  if(order) {
     dot += "\n  root [shape=point]; root -> {" + order + "}";
     order = order.split(/\s+/);
-    while (o = order.shift()) {
+    while(o = order.shift())
       if(data[o]) {
         dot += data[o][0];
         order.unshift(...data[o][1]);
       }
-    }
   }
-  if (warnings) alert(warnings);
+  if(warnings) alert(warnings);
   graphviz.renderDot(dot += "\n}");
 }
 
