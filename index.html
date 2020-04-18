@@ -10,17 +10,15 @@
 <header style="position:fixed;font-family:Arial,sans-serif">
 <h1 style="margin:0">HTN Plan Viewer</h1>
 <button style="position:absolute;right:0" onclick="render()">Generate</button>
-<textarea id="input" rows="10" cols="60">
-5 switch_on instrument0 satellite0
-7 turn_to satellite0 star0 phenomenon1
-8 calibrate satellite0 instrument0 star0
-3 turn_to satellite0 star5 star0
-4 take_image satellite0 star5 instrument0 image1
+<textarea id="input" rows="10" cols="60" style="white-space:pre">
+3 move f0 f1
+4 board p0 f1
+5 move f1 f0
+6 debark p0 f0
 root 0
-0 __top  -> __top_method 1
-1 do_observation star5 image1 -> method0 2 3 4
-2 activate_instrument satellite0 instrument0 -> method5 5 6
-6 auto_calibrate satellite0 instrument0 -> method6 7 8
+0 solve_elevator -> m1_go_ordering_0 1 2
+1 deliver_person p0 f1 f0 -> m2_ordering_0 3 4 5 6
+2 solve_elevator -> m1_abort_ordering_0
 </textarea>
 <button style="display:block;width:50%;position:absolute;left:0" onclick="download('graph.dot',dot)">Download DOT</button>
 <button style="display:block;width:50%;position:absolute;right:0" onclick="download('graph.svg',document.getElementById('graph').innerHTML)">Download SVG</button>
@@ -43,10 +41,10 @@ function render() {
     var m, l = lines[i];
     if(!l) continue;
     if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
-      data[m[1]] = ["\n  " + m[1] + " [label=\"" + m[2] + "\" shape=box3d]", []];
+      data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=box3d]', []];
     else if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)(?:\s+([\d\s]*))?$/)) // Method
       if(m[2] === "__top" && m[3] === "__top_method") order = m[4];
-      else data[m[1]] = ["\n  " + m[1] + " [label=\"" + m[2] + "\" shape=rectangle]; m" + m[1] + " [label=\"" + m[3] + "\"]; " + m[1] + " -> m" + m[1] + " -> {" + (m[4] || "") + "}", m[4] ? m[4].split(/\s+/) : []];
+      else data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=rectangle]; m' + m[1] + ' [label="' + m[3] + '"]; ' + m[1] + " -> m" + m[1] + " -> {" + (m[4] || "") + "}", m[4] ? m[4].split(/\s+/) : []];
     else if(m = l.match(/^root\s+([\d\s]*)$/)) // Root
       order = m[1];
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
