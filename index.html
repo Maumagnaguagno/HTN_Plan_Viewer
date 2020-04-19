@@ -29,10 +29,7 @@ root 0
 <script src="https://unpkg.com/@hpcc-js/wasm@0.3.6/dist/index.min.js"></script>
 <script src="https://unpkg.com/d3-graphviz@3.0.0/build/d3-graphviz.js"></script>
 <script>
-var graphviz = d3.select("#graph").graphviz().on("initEnd", render);
-graphviz.width(window.innerWidth - 20);
-graphviz.height(window.innerHeight - 20);
-graphviz.fit(true);
+var graphviz = d3.select("#graph").graphviz({width: window.innerWidth - 20, height: window.innerHeight - 20, fit: true}).on("initEnd", render);
 var dot;
 function render() {
   var lines = document.getElementById("input").value.split("\n"), warnings = "", order, data = {};
