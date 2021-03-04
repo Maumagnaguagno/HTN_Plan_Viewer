@@ -34,7 +34,7 @@ function render() {
   var lines = document.getElementById("input").value.split("\n"), warnings = "", order, data = {};
   dot = "digraph HTN {";
   for(var i = 0; i < lines.length; ++i) {
-    var m, l = lines[i];
+    var m, l = lines[i].trim();
     if(!l) continue;
     if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
       data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=box3d]', []];
