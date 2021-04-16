@@ -65,6 +65,7 @@ function download(filename, text) {
   element.click();
   document.body.removeChild(element);
 }
+window.onresize = function() { d3.select("#graph").selectWithoutDataPropagation("svg").attr("width", window.innerWidth - 20).attr("height", window.innerHeight - 20); };
 </script>
 </body>
 </html>
