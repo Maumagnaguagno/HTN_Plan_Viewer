@@ -37,9 +37,9 @@ function render() {
     if(!l) continue;
     if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+)$/)) // Action
       data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=box3d]', []];
-    else if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)(?:\s+([\d\s]*))?$/)) // Method
+    else if(m = l.match(/^(\d+)\s+([\w\s\(\)-]+?)\s+->\s+([\w\(\)-]+)\s*([\d\s]*)$/)) // Method
       if(m[2] === "__top" && m[3] === "__top_method") order = m[4];
-      else data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=rectangle]; m' + m[1] + ' [label="' + m[3] + '"]; ' + m[1] + " -> m" + m[1] + " -> {" + (m[4] || "") + "}", m[4] ? m[4].split(/\s+/) : []];
+      else data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=rectangle]; m' + m[1] + ' [label="' + m[3] + '"]; ' + m[1] + " -> m" + m[1] + " -> {" + m[4] + "}", m[4].split(/\s+/)];
     else if(m = l.match(/^root\s+([\d\s]*)$/)) // Root
       order = m[1];
     else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
