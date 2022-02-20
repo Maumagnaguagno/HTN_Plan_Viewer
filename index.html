@@ -30,11 +30,10 @@ root 0
 <script>
 var dot, graphviz = d3.select("#graph").graphviz({width: window.innerWidth - 20, height: window.innerHeight - 20, fit: true}).on("initEnd", render);
 function render() {
-  var lines = document.getElementById("input").value.split("\n"), warnings = "", order, data = {};
+  var lines = document.getElementById("input").value.split("\n"), warnings = "", data = {}, order, l, m;
   dot = "digraph HTN {";
   for(var i = 0; i < lines.length; ++i) {
-    var m, l = lines[i].trim();
-    if(!l) continue;
+    if(!(l = lines[i].trim())) continue;
     if(m = l.match(/^(\d+)\s+([\w\s()-]+)$/)) // Action
       data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=box3d]', []];
     else if(m = l.match(/^(\d+)\s+([\w\s()-]+?)\s+->\s+([\w()-]+)\s*([\d\s]*)$/)) // Method
@@ -42,15 +41,15 @@ function render() {
       else data[m[1]] = ["\n  " + m[1] + ' [label="' + m[2] + '" shape=rectangle]; m' + m[1] + ' [label="' + m[3] + '"]; ' + m[1] + " -> m" + m[1] + " -> {" + m[4] + "}", m[4].split(/\s+/)];
     else if(m = l.match(/^root\s+([\d\s]*)$/)) // Root
       order = m[1];
-    else warnings += "Ignoring line " + (i+1) + " " + l + "\n";
+    else warnings += "Ignoring line " + (i+1) + ": " + l + "\n";
   }
   if(order) {
     dot += "\n  root [shape=point]; root -> {" + order + "}";
     order = order.split(/\s+/);
-    while(o = order.shift())
-      if(data[o]) {
-        dot += data[o][0];
-        order.unshift(...data[o][1]);
+    while(m = order.shift())
+      if(data[m]) {
+        dot += data[m][0];
+        order.unshift(...data[m][1]);
       }
   }
   graphviz.renderDot(dot += "\n}");
