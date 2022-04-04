@@ -51,7 +51,7 @@ function render() {
         dot += data[m][0];
         order.unshift(...data[m][1]);
       }
-  }
+  } else warnings = "Expected root or __top";
   graphviz.renderDot(dot += "\n}");
   if(warnings) alert(warnings);
 }
