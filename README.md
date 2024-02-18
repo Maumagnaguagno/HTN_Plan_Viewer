@@ -6,4 +6,11 @@ Lines that appear before the root top level tasks correspond to the actions from
 Lines after the root correspond to the method decompositions done to achieve the plan.
 The first symbol of each line is an integer reference and not required to match any order, while the rightmost references, applicable only to methods, refer to their decompositions.
 The current implementation expects conforming plans, but warns about lines that do not match any of the possible configurations and missing elements.  
+
+An URL query can be used to load a planner output file, [limited to GitHub](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+
+```
+https://maumagnaguagno.github.io/HTN_Plan_Viewer?from=https://maumagnaguagno.github.io/HTN_Plan_Viewer/plan.txt
+```
+
 This project is the counterpart of [Classical Plan Viewer](../../../Classical_Plan_Viewer).
