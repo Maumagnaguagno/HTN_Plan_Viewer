@@ -20,7 +20,7 @@
 <script src=https://unpkg.com/d3-graphviz@4.0.0/build/d3-graphviz.min.js></script>
 <script>
 var dot, graphviz = d3.select("#graph").graphviz({width: window.innerWidth - 20, height: window.innerHeight - 20, fit: true});
-const params = new URLSearchParams(window.location.search), from = params.get("from") || "plan.txt";
+const from = new URLSearchParams(window.location.search).get("from") || "plan.txt";
 fetch(from).then(r => r.text()).then(t => {document.getElementById("input").value = t.match(/==>\n([^<]*)/)?.[1] || t; render()});
 function render() {
   var lines = document.getElementById("input").value.split("\n"), warnings = "", data = {}, order, l, m;
