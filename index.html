@@ -49,6 +49,7 @@ function render() {
   } else warnings += "Expected root";
   graphviz.renderDot(dot += "\n}");
   if(warnings) alert(warnings);
+  window.history.pushState({}, "", "?plan=" + encodeURIComponent(input.value));
 }
 function download(filename, text) {
   var element = document.createElement("a");
