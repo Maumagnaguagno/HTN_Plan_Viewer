@@ -20,13 +20,12 @@
 <script src=https://unpkg.com/d3-graphviz@4.0.0/build/d3-graphviz.min.js></script>
 <script>
 var dot, graphviz = d3.select("#graph").graphviz({width: window.innerWidth - 20, height: window.innerHeight - 20, fit: true});
-const param = new URLSearchParams(window.location.search);
-const plan = param.get("plan");
+const param = new URLSearchParams(window.location.search), plan = param.get("plan"), input = document.getElementById("input");
 if(plan) load(plan);
 else fetch(param.get("from") || "plan.txt").then(r => r.text()).then(t => load(t));
-function load(t) {document.getElementById("input").value = t.match(/==>\n([^<]*)/)?.[1] || t; render()}
+function load(t) {input.value = t.match(/==>\n([^<]*)/)?.[1] || t; render()}
 function render() {
-  var lines = document.getElementById("input").value.split("\n"), warnings = "", data = {}, order, l, m;
+  var lines = input.value.split("\n"), warnings = "", data = {}, order, l, m;
   dot = "digraph HTN {";
   for(var i = 0; i < lines.length; ++i) {
     if(!(l = lines[i].trim())) continue;
