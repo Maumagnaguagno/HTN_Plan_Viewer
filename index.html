@@ -21,8 +21,7 @@
 <script>
 var dot, graphviz = d3.select("#graph").graphviz({width: window.innerWidth - 20, height: window.innerHeight - 20, fit: true});
 const param = new URLSearchParams(window.location.search), plan = param.get("plan"), input = document.getElementById("input");
-if(plan) load(plan);
-else fetch(param.get("from") || "plan.txt").then(r => r.text()).then(t => load(t));
+plan ? load(plan) : fetch(param.get("from") || "plan.txt").then(r => r.text()).then(t => load(t));
 function load(t) {input.value = t.match(/==>\n([^<]*)/)?.[1] || t; render()}
 function render() {
   var lines = input.value.split("\n"), warnings = "", data = {}, order, l, m;
